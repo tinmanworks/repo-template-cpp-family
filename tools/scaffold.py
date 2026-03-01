@@ -1312,6 +1312,11 @@ add_library(${{PROJECT_NAME}}_addon SHARED
   src/addon_api.{se}
 )
 
+if(WIN32)
+  # Export addon entry points so consumers get a usable import library on MSVC.
+  set_target_properties(${{PROJECT_NAME}}_addon PROPERTIES WINDOWS_EXPORT_ALL_SYMBOLS ON)
+endif()
+
 target_include_directories(${{PROJECT_NAME}}_addon
   PUBLIC
     ${{CMAKE_CURRENT_SOURCE_DIR}}/include
