@@ -69,6 +69,8 @@ if ($ShowHelp) {
     exit 0
 }
 
+$script:IsWindowsHost = ($env:OS -eq "Windows_NT")
+
 function Test-VersionAtLeast {
     param([string]$Current, [string]$Minimum)
     try {
@@ -84,7 +86,7 @@ function Get-CommandVersion {
     $commandInfo = Get-Command $Command -ErrorAction SilentlyContinue
     if ($commandInfo) {
         $resolvedCommand = $commandInfo.Source
-    } elseif ($IsWindows -and $Command -ieq "cmake") {
+    } elseif ($script:IsWindowsHost -and $Command -ieq "cmake") {
         # Git Bash -> PowerShell handoff can make command discovery flaky on some Windows runners.
         $cmakeCandidates = @(
             "$env:ProgramFiles\CMake\bin\cmake.exe",
@@ -187,7 +189,7 @@ function Run-Checks {
         Write-Host "[warn] clang-format not found (optional)"
     }
 
-    if ($IsWindows) {
+    if ($script:IsWindowsHost) {
         $script:optionalIssues.Add("ccache not evaluated on Windows (optional)")
     } elseif (Get-Command ccache -ErrorAction SilentlyContinue) {
         Write-Host "[ok] ccache"
@@ -235,7 +237,7 @@ function Install-WithChoco {
 function Run-Install {
     Write-Host "== Install mode =="
 
-    if ($IsWindows) {
+    if ($script:IsWindowsHost) {
         if (Get-Command winget -ErrorAction SilentlyContinue) {
             $required = @("Kitware.CMake")
             if ($WithOptional) { $optional = @("Ninja-build.Ninja", "LLVM.LLVM") } else { $optional = @() }
