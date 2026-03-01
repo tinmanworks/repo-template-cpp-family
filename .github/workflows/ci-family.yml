@@ -103,10 +103,14 @@ jobs:
         run: |
           set -euo pipefail
           models=(lib exe engine-app workspace plugin-shared plugin-addon)
+          setup_args=(--setup)
+          if [[ "${RUNNER_OS}" == "Windows" ]]; then
+            setup_args=()
+          fi
           for model in "${models[@]}"; do
             for preset in native-debug ninja-debug; do
               out="$(mktemp -d)/${model}-${preset}"
-              python3 tools/scaffold.py --model "$model" --lang cpp --project-name "nightly_${model}_${preset}" --output-dir "$out" --setup
+              python3 tools/scaffold.py --model "$model" --lang cpp --project-name "nightly_${model}_${preset}" --output-dir "$out" "${setup_args[@]}"
               (
                 cd "$out"
                 cmake --preset "$preset"
