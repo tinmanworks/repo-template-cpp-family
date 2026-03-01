@@ -776,7 +776,7 @@ if(WIN32 AND ENGINE_SHARED)
   )
 endif()
 
-gtest_discover_tests(${{PROJECT_NAME}}_tests DISCOVERY_MODE PRE_TEST)
+add_test(NAME ${{PROJECT_NAME}}_tests COMMAND ${{PROJECT_NAME}}_tests)
 """
 
     return {
