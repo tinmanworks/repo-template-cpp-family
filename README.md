@@ -17,6 +17,13 @@ C/C++ template family with CMake-only project models and cross-platform dependen
   - `tools/setup/bootstrap.ps1`
   - `tools/setup/bootstrap.cmd`
 
+## Use This Template
+
+1. Click **Use this template** on GitHub to create a new repository.
+2. Rename package/module identifiers and update ownership metadata.
+3. Review `.env.example` and update environment configuration for your target project.
+4. Run validation and CI checks before first release.
+
 ## Quickstart
 
 ```bash
